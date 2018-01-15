@@ -4,8 +4,8 @@ const APIKEY = 'KEY';
 const APISECRET = 'SECRET';
 
 bittrex.options({ 
-  'apikey' : "691de51918284ee98c7a8b4f99f06850", 
-  'apisecret' : "465c5879f64d446c9a0b18a12c5c43ba", 
+  'apikey' : "", 
+  'apisecret' : "", 
   'stream' : false, 
   'verbose' : false, 
   'cleartext' : false 
