@@ -11,10 +11,10 @@ bittrex.options({
   'cleartext' : false 
 });
 
-var kukoinPrice = 0;
+var kucoinPrice = 0;
 var bittrexPrice = 0;
 bittrexComplete = false;
-kukoinComplete = false;
+kucoinComplete = false;
 /**
  *  sendCustomRequest example
  */
@@ -45,7 +45,7 @@ BTCPairs.forEach((pairing, index) => {
 
 
 function getArbitrage(pairing, index, base){
-	//kukoin uses BCH and bittrex uses BCC
+	//kucoin uses BCH and bittrex uses BCC
 	if (pairing == 'BCC')
 	{
 		pairingToUse = 'BCH'
@@ -53,16 +53,16 @@ function getArbitrage(pairing, index, base){
 	else
 		pairingToUse = pairing;
 
-	//although this says bittrex, I am callking kukoin's api but just using bittrex wrapper to call it for ease and because I am lazy
-	bittrex.sendCustomRequest( 'https://api.kucoin.com/v1/open/tick?symbol='+pairingToUse+'-'+base, function( kukoinData ) {  	
+	//although this says bittrex, I am callking kucoin's api but just using bittrex wrapper to call it for ease and because I am lazy
+	bittrex.sendCustomRequest( 'https://api.kucoin.com/v1/open/tick?symbol='+pairingToUse+'-'+base, function( kucoinData ) {  	
   	bittrex.getmarketsummary( { market : base+'-'+pairing}, function( data, err ) {
 
   		//display the kucoin price
   		console.log(pairing + "-" + base);
 		console.log('------------------------------')
-  		console.log("kukoin: " + kukoinData.data.lastDealPrice );  		
-  		kukoinPrice = kukoinData.data.lastDealPrice
-  		kukoinComplete =true;
+  		console.log("kucoin: " + kucoinData.data.lastDealPrice );  		
+  		kucoinPrice = kucoinData.data.lastDealPrice
+  		kucoinComplete =true;
 
   		//display the bittrex price
 		console.log( "bittrex price " + data.result[0].Last);
@@ -70,11 +70,11 @@ function getArbitrage(pairing, index, base){
 		bittrexComplete = true;
 		
 		//this assumes your funds are on bittrex and you'll move it to kucoin to capture the arbitrage
-		//if your funds on kukoin, you'd flip the sign below
-		if (bittrexPrice < kukoinPrice)
+		//if your funds on kucoin, you'd flip the sign below
+		if (bittrexPrice < kucoinPrice)
 		{
-		  console.log ("Kucoin is " + (kukoinPrice - bittrexPrice) + " more than Bittrex") ;
-		  console.log("Kucoin is " + ((kukoinPrice - bittrexPrice) / bittrexPrice)*100 + "% more than Bittrex");
+		  console.log ("Kucoin is " + (kucoinPrice - bittrexPrice) + " more than Bittrex") ;
+		  console.log("Kucoin is " + ((kucoinPrice - bittrexPrice) / bittrexPrice)*100 + "% more than Bittrex");
 		 }
 		 else{
 		  console.log('no arbitrage possible for ' + pairing);
@@ -86,19 +86,19 @@ function getArbitrage(pairing, index, base){
 
 
 /*bittrex.sendCustomRequest( 'https://api.kucoin.com/v1/open/tick?symbol=NEO-USDT', function( data ) {
-  console.log("kukoin: " + data.data.lastDealPrice );
-  kukoinPrice = data.data.lastDealPrice
-  kukoinComplete =true;
+  console.log("kucoin: " + data.data.lastDealPrice );
+  kucoinPrice = data.data.lastDealPrice
+  kucoinComplete =true;
 
   bittrex.getmarketsummary( { market : 'USDT-NEO'}, function( data, err ) {
   console.log( "bittrex price " + data.result[0].Last);
   bittrexPrice = data.result[0].Last;
   bittrexComplete = true;
 
-  if (bittrexPrice < kukoinPrice)
+  if (bittrexPrice < kucoinPrice)
   {
-  	console.log ("price difference = " + (kukoinPrice - bittrexPrice));
-  	console.log("arbitrage difference = " + ((kukoinPrice - bittrexPrice) / bittrexPrice)*100);
+  	console.log ("price difference = " + (kucoinPrice - bittrexPrice));
+  	console.log("arbitrage difference = " + ((kucoinPrice - bittrexPrice) / bittrexPrice)*100);
   }
   else{
   	console.log('no arbitrage possible for NEO');
